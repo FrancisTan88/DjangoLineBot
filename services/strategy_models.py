@@ -8,7 +8,7 @@ import datetime as dt
 import matplotlib.pyplot as plt
 import pyfolio as pf
 
-from strategy_dataset import FinancialData
+from services.strategy_dataset import FinancialData
 
 
 def prepare_positions_and_calculate_returns(self, window=None, short=None, long=None) -> float:
