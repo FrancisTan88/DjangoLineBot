@@ -17,11 +17,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 # from django.conf.urls import url
-# from echobot import views
+from echobot import views
 
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     # url('^callback',views.callback),
-    path('callback/', include('callback.urls')),
+    path('callback/', views.callback),
 ]
