@@ -23,5 +23,4 @@ from echobot import views
 urlpatterns = [
     path("admin/", admin.site.urls),
     re_path('^callback', views.callback),
-    # path('callback/', views.callback),
 ]
