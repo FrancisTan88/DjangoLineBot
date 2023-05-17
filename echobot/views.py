@@ -16,8 +16,8 @@ CHANNEL_SECRET = "c6586ddc26e80da8ee220f7945ae73aa"
 line_bot_api = LineBotApi(CHANNEL_ACCESS_TOKEN)
 parser = WebhookParser(CHANNEL_SECRET)
 
-res_strategy1 = "(1)使用布林通道策略請輸入: 布林通道 <股票代號> <測試天數> <初始資本> <短天線> <長天線>"
-res_strategy2 = "(2)使用KD策略請輸入: KD <股票代號> <測試天數> <初始資本> <短天線> <長天線>"
+res_strategy1 = "(1)使用布林通道策略請輸入: 布林通道 <股票代號> <測試天數> <初始資本> <短天線> <長天線>\n"
+res_strategy2 = "(2)使用KD策略請輸入: KD <股票代號> <測試天數> <初始資本> <短天線> <長天線\n>"
 res_strategy3 = "(3)使用RSI策略請輸入: RSI <股票代號> <測試天數> <初始資本> <最小短天線> <最大短天線> <最小長天線> <最大長天線>"
 RES_TS = f"{res_strategy1}\n{res_strategy2}\n{res_strategy3}"
 
@@ -46,7 +46,13 @@ def callback(request):
                     elif "布林通道" in mtext:
                         strategy, stock_id, days, capital, short, long = \
                                 mtext.split(" ")
+                        # process the data types
+                        days = int(days)
+                        capital = int(capital)
+                        short = int(short)
+                        long = int(long)
                         end_day = dt.datetime.today()
+                        # call the model
                         boll = BollingerModel(stock_id, end_day, days, capital)
                         best_window, best_dr, best_sr = boll.optimizer(short, long)
                         res_msg = f"最佳天線: {best_window}\n買進持有策略: {best_dr}\n布林通道策略: {best_sr}"
