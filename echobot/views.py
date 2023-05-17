@@ -17,7 +17,7 @@ line_bot_api = LineBotApi(CHANNEL_ACCESS_TOKEN)
 parser = WebhookParser(CHANNEL_SECRET)
 
 res_strategy1 = "(1)使用布林通道策略請輸入: 布林通道 <股票代號> <測試天數> <初始資本> <短天線> <長天線>\n"
-res_strategy2 = "(2)使用KD策略請輸入: KD <股票代號> <測試天數> <初始資本> <短天線> <長天線\n>"
+res_strategy2 = "(2)使用KD策略請輸入: KD <股票代號> <測試天數> <初始資本> <短天線> <長天線>\n"
 res_strategy3 = "(3)使用RSI策略請輸入: RSI <股票代號> <測試天數> <初始資本> <最小短天線> <最大短天線> <最小長天線> <最大長天線>"
 RES_TS = f"{res_strategy1}\n{res_strategy2}\n{res_strategy3}"
 
@@ -55,28 +55,48 @@ def callback(request):
                         # call the model
                         boll = BollingerModel(stock_id, end_day, days, capital)
                         best_window, best_dr, best_sr = boll.optimizer(short, long)
-                        res_msg = f"最佳天線: {best_window}\n買進持有策略: {best_dr}\n布林通道策略: {best_sr}"
+                        best_dr = round(100 * best_dr, 4)
+                        best_sr = round(100 * best_sr, 4)
+                        res_msg = f"最佳天線: {best_window}\n買進持有策略: {best_dr}%\n布林通道策略: {best_sr}%"
                         line_bot_api.reply_message(
                             event.reply_token,
                             TextSendMessage(text=res_msg))
                     elif "KD" in mtext:
                         strategy, stock_id, days, capital, short, long = \
                                 mtext.split(" ")
+                        # process the data types
+                        days = int(days)
+                        capital = int(capital)
+                        short = int(short)
+                        long = int(long)
                         end_day = dt.datetime.today()
                         k_value = 50
+                        # call the model
                         kd = KdModel(stock_id, end_day, days, capital, k_value)
                         best_window, best_dr, best_sr = kd.optimizer(short, long)
-                        res_msg = f"最佳天線: {best_window}\n買進持有策略: {best_dr}\nKD策略: {best_sr}"
+                        best_dr = round(100 * best_dr, 4)
+                        best_sr = round(100 * best_sr, 4)
+                        res_msg = f"最佳天線: {best_window}\n買進持有策略: {best_dr}%\nKD策略: {best_sr}%"
                         line_bot_api.reply_message(
                             event.reply_token,
                             TextSendMessage(text=res_msg))
                     elif "RSI" in mtext:
                         strategy, stock_id, days, capital, min_short, max_short, min_long, max_long = \
                                 mtext.split(" ")
+                        # process the data types
+                        days = int(days)
+                        capital = int(capital)
+                        min_short = int(min_short)
+                        max_short = int(max_short)
+                        min_long = int(min_long)
+                        max_long = int(max_long)
                         end_day = dt.datetime.today()
+                        # call the model
                         rsi = RsiModel(stock_id, end_day, days, capital)
                         best_short, best_long, best_dr, best_sr = rsi.optimizer(min_short, max_short, min_long, max_long)
-                        res_msg = f"最佳短天線: {best_short}\n最佳長天線: {best_long}\n買進持有策略: {best_dr}\nRSI策略: {best_sr}"
+                        best_dr = round(100 * best_dr, 4)
+                        best_sr = round(100 * best_sr, 4)
+                        res_msg = f"最佳短天線: {best_short}\n最佳長天線: {best_long}\n買進持有策略: {best_dr}%\nRSI策略: {best_sr}%"
                         line_bot_api.reply_message(
                             event.reply_token,
                             TextSendMessage(text=res_msg))
