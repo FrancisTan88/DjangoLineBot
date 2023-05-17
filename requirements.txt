@@ -1,0 +1,9 @@
+Django==4.2.1
+line-bot-sdk==2.4.2
+DateTime==4.3
+numpy==1.24.3
+pandas==2.0.1
+pandas-datareader==0.10.0
+yfinance==0.2.18
+matplotlib==3.4.2
+typing_extensions==4.1.1
