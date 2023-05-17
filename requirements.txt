@@ -7,3 +7,4 @@ pandas-datareader==0.10.0
 yfinance==0.2.18
 matplotlib==3.4.2
 typing_extensions==4.1.1
+gunicorn==20.1.0
