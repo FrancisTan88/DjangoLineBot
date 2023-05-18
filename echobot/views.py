@@ -104,6 +104,8 @@ def callback(request):
                     elif "基本資訊" in mtext:
                         stock_id = str(mtext.split(" ")[0])
                         basic_info = scrawl_info(stock_id)
+                        if len(basic_info) >= 500:
+                            basic_info = basic_info[:500]
                         line_bot_api.reply_message(
                             event.reply_token,
                             TextSendMessage(text=basic_info))
