@@ -21,8 +21,8 @@ def scrawl_info(ticker):
     company_name = f"公司名稱: {divs[0].string}"
     industry = f"產業: {divs[8].string}"
     tmp = divs[22].string.replace('\r', '').replace('\n', '')
-    # items = f"經營項目: {tmp}"
-    basic_info =  f"{company_name}\n{industry}\n"
+    items = f"經營項目: {tmp}"
+    basic_info =  f"{company_name}\n{industry}\n{items}"
     # return basic_info
     # info = pd.DataFrame({
     #     '公司名稱':divs[0].string,
@@ -87,17 +87,17 @@ def scrawl_info(ticker):
     pe = f'本益比(同業平均): {pers}'
 
 
-    # '''印出PBratio'''
-    # url = f"https://jsjustweb.jihsun.com.tw/z/zc/zca/zca_{stock_id}.djhtm"
-    # headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/111.25 (KHTML, like Gecko) Chrome/99.0.2345.81 Safari/123.36'}
-    # res = requests.get(url,headers=headers)
-    # root = BeautifulSoup(res.text, 'html.parser')
-    # # 網頁中營收比重被放在"td", class_= "t3n1"所以藉由這個方式把所有的抓出來
-    # tds = root.find_all("td", class_= "t3n1")
-    # # 找到股價淨值比，在第34個位置
-    # pbratio = tds[34].string
-    # # 印出來
-    # pb = f'股價淨值比: {pbratio}'
+    '''印出PBratio'''
+    url = f"https://jsjustweb.jihsun.com.tw/z/zc/zca/zca_{stock_id}.djhtm"
+    headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/111.25 (KHTML, like Gecko) Chrome/99.0.2345.81 Safari/123.36'}
+    res = requests.get(url,headers=headers)
+    root = BeautifulSoup(res.text, 'html.parser')
+    # 網頁中營收比重被放在"td", class_= "t3n1"所以藉由這個方式把所有的抓出來
+    tds = root.find_all("td", class_= "t3n1")
+    # 找到股價淨值比，在第34個位置
+    pbratio = tds[34].string
+    # 印出來
+    pb = f'股價淨值比: {pbratio}'
 
 
     # '''印出業務佔比'''
