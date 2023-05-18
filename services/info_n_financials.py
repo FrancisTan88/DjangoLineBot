@@ -5,7 +5,7 @@ import re
 from datetime import date
 
 
-def info_n_financials(ticker):
+def scrawl_info(ticker):
 
     stock_id = ticker
 
