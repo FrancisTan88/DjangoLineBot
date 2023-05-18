@@ -112,4 +112,5 @@ def info_n_financials(ticker):
     percent = f'營收比重: {percentages}'
 
 
-    return str(basic_info)+'\n'+str(price)+'\n'+str(eps)+'\n'+str(y)+'\n'+str(pe)+'\n'+str(pb)+'\n'+str(percent)
+    return basic_info
+    # return str(basic_info)+'\n'+str(price)+'\n'+str(eps)+'\n'+str(y)+'\n'+str(pe)+'\n'+str(pb)+'\n'+str(percent)
