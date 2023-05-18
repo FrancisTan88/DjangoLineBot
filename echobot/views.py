@@ -8,6 +8,7 @@ from linebot.exceptions import InvalidSignatureError, LineBotApiError
 from linebot.models import MessageEvent, TextMessage, TextSendMessage, ImageSendMessage
 
 from services.strategy_models import BollingerModel, KdModel, RsiModel
+from services.info_n_financials import info_n_financials
 import datetime as dt
 
 
@@ -100,6 +101,17 @@ def callback(request):
                         line_bot_api.reply_message(
                             event.reply_token,
                             TextSendMessage(text=res_msg))
+                    elif "基本資訊" in mtext:
+                        stock_id = mtext.split(" ")[0]
+                        basic_info = info_n_financials(stock_id)
+                        line_bot_api.reply_message(
+                            event.reply_token,
+                            TextSendMessage(text=basic_info))
+                    else:
+                        line_bot_api.reply_message(
+                            event.reply_token,
+                            TextSendMessage(text="Invalid input QQ"))
+                        
         return HttpResponse()
                     
 
