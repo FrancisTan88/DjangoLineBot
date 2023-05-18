@@ -112,7 +112,7 @@ def callback(request):
                     else:
                         line_bot_api.reply_message(
                             event.reply_token,
-                            TextSendMessage(text="Invalid input QQ"))
+                            TextSendMessage(text="領域展開 伏魔御廚子"))
                         
         return HttpResponse()
                     
