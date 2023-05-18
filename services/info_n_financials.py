@@ -10,19 +10,19 @@ def scrawl_info(ticker):
     stock_id = ticker
 
 
-    '''以下是給「公司基本資訊」'''
-    # 找到連結
-    url = f"https://tw.stock.yahoo.com/quote/{stock_id}/profile"
-    headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/111.25 (KHTML, like Gecko) Chrome/99.0.2345.81 Safari/123.36'}
-    res = requests.get(url,headers=headers)
-    root = BeautifulSoup(res.text, 'html.parser')
-    # 資料在div下面的這個class裡面，接下來我去印出來，就會出現所有這個class的東西，再一個一個去找我要的資料
-    divs = root.find_all("div", class_= "Py(8px) Pstart(12px) Bxz(bb)")
-    company_name = f"公司名稱: {divs[0].string}"
-    industry = f"產業: {divs[8].string}"
-    tmp = divs[22].string.replace('\r', '').replace('\n', '')
-    # items = f"經營項目: {tmp}"
-    basic_info =  f"{company_name}\n{industry}\n"
+    # '''以下是給「公司基本資訊」'''
+    # # 找到連結
+    # url = f"https://tw.stock.yahoo.com/quote/{stock_id}/profile"
+    # headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/111.25 (KHTML, like Gecko) Chrome/99.0.2345.81 Safari/123.36'}
+    # res = requests.get(url,headers=headers)
+    # root = BeautifulSoup(res.text, 'html.parser')
+    # # 資料在div下面的這個class裡面，接下來我去印出來，就會出現所有這個class的東西，再一個一個去找我要的資料
+    # divs = root.find_all("div", class_= "Py(8px) Pstart(12px) Bxz(bb)")
+    # company_name = f"公司名稱: {divs[0].string}"
+    # industry = f"產業: {divs[8].string}"
+    # tmp = divs[22].string.replace('\r', '').replace('\n', '')
+    # # items = f"經營項目: {tmp}"
+    # basic_info =  f"{company_name}\n{industry}\n"
     # return basic_info
     # info = pd.DataFrame({
     #     '公司名稱':divs[0].string,
@@ -114,4 +114,4 @@ def scrawl_info(ticker):
 
 
     # return basic_info
-    return str(basic_info)+'\n'+str(price)+'\n'+str(eps)+'\n'+str(y)+'\n'+str(pe)+'\n'+str(pb)
+    return str(price)+'\n'+str(eps)+'\n'+str(y)+'\n'+str(pe)+'\n'+str(pb)
