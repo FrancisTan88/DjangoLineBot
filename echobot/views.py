@@ -101,6 +101,11 @@ def callback(request):
                         line_bot_api.reply_message(
                             event.reply_token,
                             TextSendMessage(text=res_msg))
+                    elif mtext == "基本面":
+                        res_msg = "請輸入: <股票代號> <基本資訊>\n(e.g. 2330 基本資訊)"
+                        line_bot_api.reply_message(
+                            event.reply_token,
+                            TextSendMessage(text=res_msg))
                     elif "基本資訊" in mtext:
                         stock_id = str(mtext.split(" ")[0])
                         basic_info = scrawl_info(stock_id)
