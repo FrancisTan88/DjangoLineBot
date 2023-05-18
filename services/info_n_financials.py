@@ -71,7 +71,7 @@ def scrawl_info(ticker):
     # 全部抓出來之後，發現我要的資訊會出現在最後一個，所以我直接挑出最後一個，string就是去抓到純文字的部分
     yields = spans[-1].string
     # 印出 近 5 年平均現金殖利率 2.69%
-    y = f'近 5 年平均現金殖利率 : {yields}'
+    y = f'近5年平均現金殖利率: {yields}'
 
     '''印出PE ratio'''
     url = f"https://tw.stock.yahoo.com/quote/{stock_id}"
@@ -114,5 +114,5 @@ def scrawl_info(ticker):
 
 
     # return basic_info
-    return basic_info + "\n" + str(y)+'\n'+str(pe)
+    return basic_info + "\n\n" + pb + '\n' + str(y) +'\n'+str(pe)
     # return str(price)+'\n'+str(eps)+'\n'+str(y)+'\n'+str(pe)+'\n'+str(pb)
