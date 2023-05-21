@@ -22,7 +22,7 @@ def scrawl_info(ticker):
     industry = f"產業: {divs[8].string}"
     tmp = divs[22].string.replace('\r', '').replace('\n', '')
     items = f"經營項目: {tmp}"
-    basic_info =  f"{company_name}\n{industry}\n{items}"
+    basic_info =  f"{company_name}\n\n{industry}\n\n{items}"
     
 
     '''印出殖利率'''
@@ -75,4 +75,4 @@ def scrawl_info(ticker):
     # 印出來
     percent = f'營收比重: {percentages}'
 
-    return basic_info + "\n\n" + pb + '\n' + str(y) +'\n'+str(pe) + '\n' + percent
+    return basic_info + "\n\n" + pb + '\n\n' + str(y) +'\n\n'+str(pe) + '\n\n' + percent
