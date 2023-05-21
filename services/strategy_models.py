@@ -7,7 +7,7 @@ import yfinance as yf
 import datetime as dt
 import matplotlib.pyplot as plt
 import pyfolio as pf
-import talib
+# import talib
 
 from services.strategy_dataset import FinancialData
 

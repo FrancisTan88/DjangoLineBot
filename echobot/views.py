@@ -189,7 +189,7 @@ def callback(request):
         
     else:
         return HttpResponseBadRequest()
-    
+
 # @handler.add(MessageEvent, message=TextMessage)
 # def message_text(event: MessageEvent):
 #     line_bot_api.reply_message(
