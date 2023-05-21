@@ -19,8 +19,8 @@ line_bot_api = LineBotApi(CHANNEL_ACCESS_TOKEN)
 parser = WebhookParser(CHANNEL_SECRET)
 
 res_strategy1 = "(1)使用布林通道策略請輸入:\n布林通道 <股票代號> <測試天數>\n<初始資本> <短天線> <長天線>\n"
-res_strategy2 = "(2)使用KD策略請輸入:\nKD <股票代號> <測試天數> <初始資本>\n<短天線> <長天線>\n"
-res_strategy3 = "(3)使用RSI策略請輸入:\nRSI <股票代號> <測試天數> <初始資本>\n<最小短天線> <最大短天線>\n<最小長天線> <最大長天線>\n"
+res_strategy2 = "(2)使用KD策略請輸入:\nKD <股票代號> <測試天數> <初始資本> <短天線> <長天線>\n"
+res_strategy3 = "(3)使用RSI策略請輸入:\nRSI <股票代號> <測試天數> <初始資本> <最小短天線> <最大短天線>\n<最小長天線> <最大長天線>\n"
 res_strategy4 = "(4)使用SMA策略請輸入: SMA <股票代號> <測試天數> <初始資本> <最小短天線> <最大短天線> <最小長天線> <最大長天線>\n"
 res_strategy5 = "(5)使用MACD策略請輸入: MACD <股票代號> <測試天數> <初始資本> <最小短天線> <最大短天線> <最小長天線> <最大長天線>"
 
@@ -149,7 +149,7 @@ def callback(request):
                     #         TextSendMessage(text=res_msg))
 
                     elif mtext == "基本面":
-                        res_msg = "(1)欲查詢基本資訊請輸入: <股票代號> <基本資訊>\n(2)欲查詢新聞請輸入: <股票代號> <新聞>"
+                        res_msg = "(1)欲查詢基本資訊請輸入:\n  <股票代號> <基本資訊>\n(2)欲查詢新聞請輸入:\n  <股票代號> <新聞>"
                         line_bot_api.reply_message(
                             event.reply_token,
                             TextSendMessage(text=res_msg))
@@ -170,7 +170,7 @@ def callback(request):
                     else:
                         line_bot_api.reply_message(
                             event.reply_token,
-                            TextSendMessage(text="(1)欲查詢公司基本資訊請輸入:\n 基本面\n(2)欲使用交易策略請輸入:\n 交易策略"))
+                            TextSendMessage(text="(1)欲查詢公司基本資訊請輸入: 基本面\n(2)欲使用交易策略請輸入: 交易策略"))
                         
         return HttpResponse()
 
