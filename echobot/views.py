@@ -7,7 +7,7 @@ from linebot import LineBotApi, WebhookParser, WebhookHandler
 from linebot.exceptions import InvalidSignatureError, LineBotApiError
 from linebot.models import MessageEvent, TextMessage, TextSendMessage, ImageSendMessage
 
-from services.strategy_models import BollingerModel, KdModel, RsiModel, SMAModel, MACDModel
+from services.strategy_models import BollingerModel, KdModel, RsiModel
 from services.info_n_financials import scrawl_info
 from services.scrawl_news_final import news
 import datetime as dt
