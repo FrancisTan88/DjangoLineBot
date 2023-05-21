@@ -9,6 +9,7 @@ from linebot.models import MessageEvent, TextMessage, TextSendMessage, ImageSend
 
 from services.strategy_models import BollingerModel, KdModel, RsiModel, SMAModel, MACDModel
 from services.info_n_financials import scrawl_info
+from services.scrawl_news_final import news
 import datetime as dt
 
 
@@ -105,49 +106,50 @@ def callback(request):
                         line_bot_api.reply_message(
                             event.reply_token,
                             TextSendMessage(text=res_msg))
-                    elif "SMA" in mtext:
-                        strategy, stock_id, days, capital, min_short, max_short, min_long, max_long = \
-                                mtext.split(" ")
-                        # process the data types
-                        days = int(days)
-                        capital = int(capital)
-                        min_short = int(min_short)
-                        max_short = int(max_short)
-                        min_long = int(min_long)
-                        max_long = int(max_long)
-                        end_day = dt.datetime.today()
-                        # call the model
-                        sma = SMAModel(stock_id, end_day, days, capital)
-                        best_short, best_long, best_dr, best_sr = sma.optimizer(min_short, max_short, min_long, max_long)
-                        best_dr = round(100 * best_dr, 4)
-                        best_sr = round(100 * best_sr, 4)
-                        res_msg = f"最佳短天線: {best_short}\n最佳長天線: {best_long}\n買進持有策略: {best_dr}%\nRSI策略: {best_sr}%"
-                        line_bot_api.reply_message(
-                            event.reply_token,
-                            TextSendMessage(text=res_msg))
-                    elif "MACD" in mtext:
-                        strategy, stock_id, days, capital, min_short, max_short, min_long, max_long = \
-                                mtext.split(" ")
-                        # process the data types
-                        days = int(days)
-                        capital = int(capital)
-                        min_short = int(min_short)
-                        max_short = int(max_short)
-                        min_long = int(min_long)
-                        max_long = int(max_long)
-                        end_day = dt.datetime.today()
-                        # call the model
-                        macd = MACDModel(stock_id, end_day, days, capital)
-                        best_short, best_long, best_dr, best_sr = macd.optimizer(min_short, max_short, min_long, max_long)
-                        best_dr = round(100 * best_dr, 4)
-                        best_sr = round(100 * best_sr, 4)
-                        res_msg = f"最佳短天線: {best_short}\n最佳長天線: {best_long}\n買進持有策略: {best_dr}%\nRSI策略: {best_sr}%"
-                        line_bot_api.reply_message(
-                            event.reply_token,
-                            TextSendMessage(text=res_msg))
+                        
+                    # elif "SMA" in mtext:
+                    #     strategy, stock_id, days, capital, min_short, max_short, min_long, max_long = \
+                    #             mtext.split(" ")
+                    #     # process the data types
+                    #     days = int(days)
+                    #     capital = int(capital)
+                    #     min_short = int(min_short)
+                    #     max_short = int(max_short)
+                    #     min_long = int(min_long)
+                    #     max_long = int(max_long)
+                    #     end_day = dt.datetime.today()
+                    #     # call the model
+                    #     sma = SMAModel(stock_id, end_day, days, capital)
+                    #     best_short, best_long, best_dr, best_sr = sma.optimizer(min_short, max_short, min_long, max_long)
+                    #     best_dr = round(100 * best_dr, 4)
+                    #     best_sr = round(100 * best_sr, 4)
+                    #     res_msg = f"最佳短天線: {best_short}\n最佳長天線: {best_long}\n買進持有策略: {best_dr}%\nRSI策略: {best_sr}%"
+                    #     line_bot_api.reply_message(
+                    #         event.reply_token,
+                    #         TextSendMessage(text=res_msg))
+                    # elif "MACD" in mtext:
+                    #     strategy, stock_id, days, capital, min_short, max_short, min_long, max_long = \
+                    #             mtext.split(" ")
+                    #     # process the data types
+                    #     days = int(days)
+                    #     capital = int(capital)
+                    #     min_short = int(min_short)
+                    #     max_short = int(max_short)
+                    #     min_long = int(min_long)
+                    #     max_long = int(max_long)
+                    #     end_day = dt.datetime.today()
+                    #     # call the model
+                    #     macd = MACDModel(stock_id, end_day, days, capital)
+                    #     best_short, best_long, best_dr, best_sr = macd.optimizer(min_short, max_short, min_long, max_long)
+                    #     best_dr = round(100 * best_dr, 4)
+                    #     best_sr = round(100 * best_sr, 4)
+                    #     res_msg = f"最佳短天線: {best_short}\n最佳長天線: {best_long}\n買進持有策略: {best_dr}%\nRSI策略: {best_sr}%"
+                    #     line_bot_api.reply_message(
+                    #         event.reply_token,
+                    #         TextSendMessage(text=res_msg))
 
                     elif mtext == "基本面":
-                        res_msg = "請輸入: <股票代號> <基本資訊>\n(e.g. 2330 基本資訊)"
+                        res_msg = "(1)欲查詢基本資訊請輸入: <股票代號> <基本資訊>\n(2)欲查詢新聞請輸入: <股票代號> <新聞>"
                         line_bot_api.reply_message(
                             event.reply_token,
                             TextSendMessage(text=res_msg))
@@ -159,6 +161,12 @@ def callback(request):
                         line_bot_api.reply_message(
                             event.reply_token,
                             TextSendMessage(text=basic_info))
+                    elif "新聞" in mtext:
+                        stock_id = str(mtext.split(" ")[0])
+                        ns = str(news(stock_id))
+                        line_bot_api.reply_message(
+                            event.reply_token,
+                            TextSendMessage(text=ns))
                     else:
                         line_bot_api.reply_message(
                             event.reply_token,
