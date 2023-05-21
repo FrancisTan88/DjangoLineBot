@@ -7,6 +7,7 @@ import yfinance as yf
 import datetime as dt
 import matplotlib.pyplot as plt
 import pyfolio as pf
+import talib
 
 from services.strategy_dataset import FinancialData
 
@@ -226,5 +227,92 @@ class RsiModel(FinancialData):
 
     def plot_equity_curve(self, max_short: int, max_long: int):
         tmp1, tmp2 = self.rsi_calculate_returns(short=max_short, long=max_long)
+        self.data[["daily_equity", "strategy_equity"]].plot()
+        plt.show()
+
+
+class SMAModel(FinancialData):
+    def __init__(self, symbol: str, end_day: str, days: int, capital: int) -> None:
+        super(SMAModel, self).__init__(symbol, end_day, days, capital)
+
+    def prepare_indicators(self, window: None, short: int, long: int) -> None:
+        self.data['Long SMA'] = talib.SMA(self.data['Adj Close'], timeperiod=long)
+        self.data['Short SMA'] = talib.SMA(self.data['Adj Close'], timeperiod=short)
+
+    def prepare_signals(self, window: None, short: None, long: int) -> None:
+        signal = []
+        for day in range(len(self.data)):
+            if day <= long:
+                signal.append(0)
+            elif self.data['Adj Close'].iloc[day-1] > self.data['Long SMA'].iloc[day-1]:
+                    signal.append(1)
+            elif self.data['Adj Close'].iloc[day-1] < self.data['Short SMA'].iloc[day-1]:
+                    signal.append(-1)
+            else:
+                signal.append(0)
+        self.data['signal'] = signal
+
+    def SMA_calculate_returns(self, short: int, long: int) -> float:
+        return prepare_positions_and_calculate_returns(self=self, short=short, long=long)
+    
+    def optimizer(self, short_start: int, short_end: int, long_start: int, long_end: int):
+        max_dr, max_sr, max_short, max_long = -1, -1, -1, -1
+        for short in range(short_start, short_end+1):
+            for long in range(long_start, long_end+1):
+                curr_dr, curr_sr = self.SMA_calculate_returns(short=short, long=long)
+                if curr_sr > max_sr:
+                    max_sr = curr_sr
+                    max_dr = curr_dr
+                    max_short = short
+                    max_long = long
+        return max_short, max_long, max_dr, max_sr
+
+    def plot_equity_curve(self, max_short: int, max_long: int):
+        tmp1, tmp2 = self.SMA_calculate_returns(short=max_short, long=max_long)
+        self.data[["daily_equity", "strategy_equity"]].plot()
+        plt.show()
+
+
+class MACDModel(FinancialData):
+    def __init__(self, symbol: str, end_day: str, days: int, capital: int) -> None:
+        super(MACDModel, self).__init__(symbol, end_day, days, capital)
+
+    def prepare_indicators(self, window: None, short: int, long: int) -> None:
+        self.data['Short EMA'] = talib.EMA(self.data['Adj Close'], short)
+        self.data['Long EMA'] = talib.EMA(self.data['Adj Close'], long)
+        self.data['DIFF'], self.data['DEM'], self.data['OSC'] = talib.MACD(self.data['Adj Close'], short, long, 9)
+
+    def prepare_signals(self, window: None, short: int, long: int) -> None:
+        signal = []
+        for day in range(len(self.data)):
+            if day <= long:
+                signal.append(0)
+            elif self.data['DIFF'].iloc[day-2] <= self.data['DEM'].iloc[day-2] and \
+                    self.data['DIFF'].iloc[day-1] > self.data['DEM'].iloc[day-1]:
+                    signal.append(1)
+            elif self.data['DIFF'].iloc[day-2] >= self.data['DEM'].iloc[day-2] and \
+                    self.data['DIFF'].iloc[day-1] < self.data['DEM'].iloc[day-1]:
+                    signal.append(-1)
+            else:
+                signal.append(0)
+        self.data['signal'] = signal
+
+    def MACD_calculate_returns(self, short: int, long: int) -> float:
+        return prepare_positions_and_calculate_returns(self=self, short=short, long=long)
+
+    def optimizer(self, short_start: int, short_end: int, long_start: int, long_end: int):
+        max_dr, max_sr, max_short, max_long = -1, -1, -1, -1
+        for short in range(short_start, short_end+1):
+            for long in range(long_start, long_end+1):
+                curr_dr, curr_sr = self.MACD_calculate_returns(short=short, long=long)
+                if curr_sr > max_sr:
+                    max_sr = curr_sr
+                    max_dr = curr_dr
+                    max_short = short
+                    max_long = long
+        return max_short, max_long, max_dr, max_sr
+
+    def plot_equity_curve(self, max_short: int, max_long: int):
+        tmp1, tmp2 = self.MACD_calculate_returns(short=max_short, long=max_long)
         self.data[["daily_equity", "strategy_equity"]].plot()
         plt.show()
