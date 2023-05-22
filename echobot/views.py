@@ -124,7 +124,7 @@ def callback(request):
                         best_short, best_long, best_dr, best_sr = sma.optimizer(min_short, max_short, min_long, max_long)
                         best_dr = round(100 * best_dr, 4)
                         best_sr = round(100 * best_sr, 4)
-                        res_msg = f"最佳短天線: {best_short}\n最佳長天線: {best_long}\n買進持有策略: {best_dr}%\nRSI策略: {best_sr}%"
+                        res_msg = f"最佳短天線: {best_short}\n最佳長天線: {best_long}\n買進持有策略: {best_dr}%\nSMA策略: {best_sr}%"
                         line_bot_api.reply_message(
                             event.reply_token,
                             TextSendMessage(text=res_msg))
@@ -144,7 +144,7 @@ def callback(request):
                         best_short, best_long, best_dr, best_sr = macd.optimizer(min_short, max_short, min_long, max_long)
                         best_dr = round(100 * best_dr, 4)
                         best_sr = round(100 * best_sr, 4)
-                        res_msg = f"最佳短天線: {best_short}\n最佳長天線: {best_long}\n買進持有策略: {best_dr}%\nRSI策略: {best_sr}%"
+                        res_msg = f"最佳短天線: {best_short}\n最佳長天線: {best_long}\n買進持有策略: {best_dr}%\nMACD策略: {best_sr}%"
                         line_bot_api.reply_message(
                             event.reply_token,
                             TextSendMessage(text=res_msg))

@@ -37,7 +37,3 @@ def news(stock):
 
         content += "{} {}\n{}\n".format(date, title, url)
     return content
-
-# stock = input()  # 輸入要搜尋的股票
-# tmp = news(stock)
-# print(tmp)
